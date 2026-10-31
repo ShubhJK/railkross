@@ -537,7 +537,7 @@ const CITIES = [
   { name:'Chandigarh', lat:30.7333, lng:76.7794 }
 ];
 
-/* PATIALA LOCAL ROUTING DATA - ACCURATE GEOGRAPHY */
+/* PATIALA LOCAL ROUTING DATA - ACCURATE GEOGRAPHY & ROADS */
 const PATIALA_LOCATIONS = [
   "Model Town", 
   "Thapar University", 
@@ -551,78 +551,96 @@ const PATIALA_LOCATIONS = [
 
 const LOCAL_ROUTES = [
   // --- NORTH TO NORTH (0 CROSSINGS) ---
-  { from: "Model Town", to: "Thapar University", crossingIds: [], bypass: "Via Bhupindra Road", dist: 3.5, bypassDist: 4.2, time: 9, bypassTime: 12 },
-  { from: "Thapar University", to: "Model Town", crossingIds: [], bypass: "Via Bhupindra Road", dist: 3.5, bypassDist: 4.2, time: 9, bypassTime: 12 },
-  { from: "Model Town", to: "Baradari Gardens", crossingIds: [], bypass: "Via Leela Bhawan Chowk", dist: 2.2, bypassDist: 3.1, time: 6, bypassTime: 10 },
-  { from: "Baradari Gardens", to: "Model Town", crossingIds: [], bypass: "Via Leela Bhawan Chowk", dist: 2.2, bypassDist: 3.1, time: 6, bypassTime: 10 },
-  { from: "Model Town", to: "Leela Bhawan", crossingIds: [], bypass: "Via Baradari", dist: 1.5, bypassDist: 2.2, time: 4, bypassTime: 7 },
-  { from: "Leela Bhawan", to: "Model Town", crossingIds: [], bypass: "Via Baradari", dist: 1.5, bypassDist: 2.2, time: 4, bypassTime: 7 },
-  { from: "Model Town", to: "Dukhniwaran Sahib", crossingIds: [], bypass: "Via Leela Bhawan / Mall Road", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
-  { from: "Dukhniwaran Sahib", to: "Model Town", crossingIds: [], bypass: "Via Leela Bhawan / Mall Road", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
+  { from: "Model Town", to: "Thapar University", crossingIds: [], via: "Via Bhupindra Road & Bhadson Road", bypass: "Via Leela Bhawan / Passy Road", dist: 3.5, bypassDist: 4.2, time: 9, bypassTime: 12 },
+  { from: "Thapar University", to: "Model Town", crossingIds: [], via: "Via Bhadson Road & Bhupindra Road", bypass: "Via Passy Road / Leela Bhawan", dist: 3.5, bypassDist: 4.2, time: 9, bypassTime: 12 },
   
-  { from: "Thapar University", to: "Baradari Gardens", crossingIds: [], bypass: "Via Leela Bhawan / Passy Road", dist: 3.6, bypassDist: 4.8, time: 10, bypassTime: 15 },
-  { from: "Baradari Gardens", to: "Thapar University", crossingIds: [], bypass: "Via Leela Bhawan / Passy Road", dist: 3.6, bypassDist: 4.8, time: 10, bypassTime: 15 },
-  { from: "Thapar University", to: "Leela Bhawan", crossingIds: [], bypass: "Via Bhupindra Road", dist: 4.0, bypassDist: 5.5, time: 11, bypassTime: 16 },
-  { from: "Leela Bhawan", to: "Thapar University", crossingIds: [], bypass: "Via Bhupindra Road", dist: 4.0, bypassDist: 5.5, time: 11, bypassTime: 16 },
-  { from: "Thapar University", to: "Dukhniwaran Sahib", crossingIds: [], bypass: "Via Sirhind Road Bypass", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
-  { from: "Dukhniwaran Sahib", to: "Thapar University", crossingIds: [], bypass: "Via Sirhind Road Bypass", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  { from: "Model Town", to: "Baradari Gardens", crossingIds: [], via: "Via Leela Bhawan Chowk", bypass: "Via 22 No. Phatak Flyover", dist: 2.2, bypassDist: 3.1, time: 6, bypassTime: 10 },
+  { from: "Baradari Gardens", to: "Model Town", crossingIds: [], via: "Via Leela Bhawan Chowk", bypass: "Via 22 No. Phatak Flyover", dist: 2.2, bypassDist: 3.1, time: 6, bypassTime: 10 },
+  
+  { from: "Model Town", to: "Leela Bhawan", crossingIds: [], via: "Via Baradari", bypass: "Via 22 No. Phatak Flyover", dist: 1.5, bypassDist: 2.2, time: 4, bypassTime: 7 },
+  { from: "Leela Bhawan", to: "Model Town", crossingIds: [], via: "Via Baradari", bypass: "Via 22 No. Phatak Flyover", dist: 1.5, bypassDist: 2.2, time: 4, bypassTime: 7 },
+  
+  { from: "Model Town", to: "Dukhniwaran Sahib", crossingIds: [], via: "Via Mall Road & Passy Road", bypass: "Via 22 No. Phatak Flyover", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
+  { from: "Dukhniwaran Sahib", to: "Model Town", crossingIds: [], via: "Via Passy Road & Mall Road", bypass: "Via 22 No. Phatak Flyover", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
+  
+  { from: "Thapar University", to: "Baradari Gardens", crossingIds: [], via: "Via Bhadson Road & Leela Bhawan", bypass: "Via Ring Road Bypass", dist: 3.6, bypassDist: 4.8, time: 10, bypassTime: 15 },
+  { from: "Baradari Gardens", to: "Thapar University", crossingIds: [], via: "Via Leela Bhawan & Bhadson Road", bypass: "Via Ring Road Bypass", dist: 3.6, bypassDist: 4.8, time: 10, bypassTime: 15 },
+  
+  { from: "Thapar University", to: "Leela Bhawan", crossingIds: [], via: "Via Bhadson Road & Bhupindra Road", bypass: "Via Ring Road Bypass", dist: 4.0, bypassDist: 5.5, time: 11, bypassTime: 16 },
+  { from: "Leela Bhawan", to: "Thapar University", crossingIds: [], via: "Via Bhupindra Road & Bhadson Road", bypass: "Via Ring Road Bypass", dist: 4.0, bypassDist: 5.5, time: 11, bypassTime: 16 },
+  
+  { from: "Thapar University", to: "Dukhniwaran Sahib", crossingIds: [], via: "Via Sirhind Road Bypass", bypass: "Via Ring Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  { from: "Dukhniwaran Sahib", to: "Thapar University", crossingIds: [], via: "Via Sirhind Road Bypass", bypass: "Via Ring Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
 
-  { from: "Baradari Gardens", to: "Leela Bhawan", crossingIds: [], bypass: "Via Mall Road", dist: 1.0, bypassDist: 1.8, time: 3, bypassTime: 6 },
-  { from: "Leela Bhawan", to: "Baradari Gardens", crossingIds: [], bypass: "Via Mall Road", dist: 1.0, bypassDist: 1.8, time: 3, bypassTime: 6 },
-  { from: "Baradari Gardens", to: "Dukhniwaran Sahib", crossingIds: [], bypass: "Via Passy Road", dist: 1.5, bypassDist: 2.5, time: 4, bypassTime: 8 },
-  { from: "Dukhniwaran Sahib", to: "Baradari Gardens", crossingIds: [], bypass: "Via Passy Road", dist: 1.5, bypassDist: 2.5, time: 4, bypassTime: 8 },
+  { from: "Baradari Gardens", to: "Leela Bhawan", crossingIds: [], via: "Via Mall Road", bypass: "Via Sheranwala Gate", dist: 1.0, bypassDist: 1.8, time: 3, bypassTime: 6 },
+  { from: "Leela Bhawan", to: "Baradari Gardens", crossingIds: [], via: "Via Mall Road", bypass: "Via Sheranwala Gate", dist: 1.0, bypassDist: 1.8, time: 3, bypassTime: 6 },
+  
+  { from: "Baradari Gardens", to: "Dukhniwaran Sahib", crossingIds: [], via: "Via Passy Road", bypass: "Via Mall Road", dist: 1.5, bypassDist: 2.5, time: 4, bypassTime: 8 },
+  { from: "Dukhniwaran Sahib", to: "Baradari Gardens", crossingIds: [], via: "Via Passy Road", bypass: "Via Mall Road", dist: 1.5, bypassDist: 2.5, time: 4, bypassTime: 8 },
 
-  { from: "Leela Bhawan", to: "Dukhniwaran Sahib", crossingIds: [], bypass: "Via Mall Road / Passy Road", dist: 1.5, bypassDist: 2.5, time: 5, bypassTime: 9 },
-  { from: "Dukhniwaran Sahib", to: "Leela Bhawan", crossingIds: [], bypass: "Via Mall Road / Passy Road", dist: 1.5, bypassDist: 2.5, time: 5, bypassTime: 9 },
+  { from: "Leela Bhawan", to: "Dukhniwaran Sahib", crossingIds: [], via: "Via Mall Road & Passy Road", bypass: "Via Baradari", dist: 1.5, bypassDist: 2.5, time: 5, bypassTime: 9 },
+  { from: "Dukhniwaran Sahib", to: "Leela Bhawan", crossingIds: [], via: "Via Passy Road & Mall Road", bypass: "Via Baradari", dist: 1.5, bypassDist: 2.5, time: 5, bypassTime: 9 },
 
   // --- SOUTH TO SOUTH (0 CROSSINGS) ---
-  { from: "Qila Mubarak", to: "Old Bus Stand", crossingIds: [], bypass: "Via Leela Bhawan", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
-  { from: "Old Bus Stand", to: "Qila Mubarak", crossingIds: [], bypass: "Via Leela Bhawan", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
-  { from: "Qila Mubarak", to: "New Bus Stand", crossingIds: [], bypass: "Via Sangrur Road", dist: 3.0, bypassDist: 4.5, time: 8, bypassTime: 13 },
-  { from: "New Bus Stand", to: "Qila Mubarak", crossingIds: [], bypass: "Via Sangrur Road", dist: 3.0, bypassDist: 4.5, time: 8, bypassTime: 13 },
-  { from: "Old Bus Stand", to: "New Bus Stand", crossingIds: [], bypass: "Via Sangrur Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
-  { from: "New Bus Stand", to: "Old Bus Stand", crossingIds: [], bypass: "Via Sangrur Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  { from: "Qila Mubarak", to: "Old Bus Stand", crossingIds: [], via: "Via Leela Bhawan", bypass: "Via Sanaur Road", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
+  { from: "Old Bus Stand", to: "Qila Mubarak", crossingIds: [], via: "Via Leela Bhawan", bypass: "Via Sanaur Road", dist: 2.0, bypassDist: 3.0, time: 6, bypassTime: 10 },
+  
+  { from: "Qila Mubarak", to: "New Bus Stand", crossingIds: [], via: "Via Sangrur Road", bypass: "Via Ring Road", dist: 3.0, bypassDist: 4.5, time: 8, bypassTime: 13 },
+  { from: "New Bus Stand", to: "Qila Mubarak", crossingIds: [], via: "Via Sangrur Road", bypass: "Via Ring Road", dist: 3.0, bypassDist: 4.5, time: 8, bypassTime: 13 },
+  
+  { from: "Old Bus Stand", to: "New Bus Stand", crossingIds: [], via: "Via Sangrur Road", bypass: "Via Ring Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  { from: "New Bus Stand", to: "Old Bus Stand", crossingIds: [], via: "Via Sangrur Road", bypass: "Via Ring Road", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
 
   // --- NORTH TO SOUTH (CROSSING THE TRACKS) ---
   // Model Town to South
-  { from: "Model Town", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Old Bus Stand", to: "Model Town", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Model Town", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
-  { from: "Qila Mubarak", to: "Model Town", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
-  { from: "Model Town", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
-  { from: "New Bus Stand", to: "Model Town", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
+  { from: "Model Town", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak & Leela Bhawan", bypass: "Via 22 No. Phatak Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  { from: "Old Bus Stand", to: "Model Town", crossingIds: ["PB-PTA-024"], via: "Via Leela Bhawan & 22 No. Phatak", bypass: "Via 22 No. Phatak Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  
+  { from: "Model Town", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak & Mall Road", bypass: "Via Leela Bhawan Flyover", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  { from: "Qila Mubarak", to: "Model Town", crossingIds: ["PB-PTA-023"], via: "Via Mall Road & 23 No. Phatak", bypass: "Via Leela Bhawan Flyover", dist: 4.0, bypassDist: 5.5, time: 10, bypassTime: 15 },
+  
+  { from: "Model Town", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
+  { from: "New Bus Stand", to: "Model Town", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
 
   // Thapar to South
-  { from: "Thapar University", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
-  { from: "Old Bus Stand", to: "Thapar University", crossingIds: ["PB-PTA-024"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
-  { from: "Thapar University", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
-  { from: "Qila Mubarak", to: "Thapar University", crossingIds: ["PB-PTA-023"], bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
-  { from: "Thapar University", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via NH 64 Bypass", dist: 7.0, bypassDist: 8.5, time: 16, bypassTime: 23 },
-  { from: "New Bus Stand", to: "Thapar University", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via NH 64 Bypass", dist: 7.0, bypassDist: 8.5, time: 16, bypassTime: 23 },
+  { from: "Thapar University", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], via: "Via Bhadson Road & 22 No. Phatak", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  { from: "Old Bus Stand", to: "Thapar University", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak & Bhadson Road", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  
+  { from: "Thapar University", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], via: "Via Bhadson Road & 23 No. Phatak", bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
+  { from: "Qila Mubarak", to: "Thapar University", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak & Bhadson Road", bypass: "Via Ring Road Bypass", dist: 5.5, bypassDist: 7.0, time: 13, bypassTime: 20 },
+  
+  { from: "Thapar University", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Bhadson Road & NH 64 Bypass", bypass: "Via NH 64 Bypass", dist: 7.0, bypassDist: 8.5, time: 16, bypassTime: 23 },
+  { from: "New Bus Stand", to: "Thapar University", crossingIds: ["PB-PTA-SANGRUR"], via: "Via NH 64 Bypass & Bhadson Road", bypass: "Via NH 64 Bypass", dist: 7.0, bypassDist: 8.5, time: 16, bypassTime: 23 },
 
   // Baradari to South
-  { from: "Baradari Gardens", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Old Bus Stand", to: "Baradari Gardens", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Baradari Gardens", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Qila Mubarak", to: "Baradari Gardens", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Baradari Gardens", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
-  { from: "New Bus Stand", to: "Baradari Gardens", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  { from: "Baradari Gardens", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak & Leela Bhawan", bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  { from: "Old Bus Stand", to: "Baradari Gardens", crossingIds: ["PB-PTA-024"], via: "Via Leela Bhawan & 22 No. Phatak", bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  
+  { from: "Baradari Gardens", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak & Mall Road", bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  { from: "Qila Mubarak", to: "Baradari Gardens", crossingIds: ["PB-PTA-023"], via: "Via Mall Road & 23 No. Phatak", bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  
+  { from: "Baradari Gardens", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  { from: "New Bus Stand", to: "Baradari Gardens", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
 
   // Leela Bhawan to South
-  { from: "Leela Bhawan", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Old Bus Stand", to: "Leela Bhawan", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Leela Bhawan", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Qila Mubarak", to: "Leela Bhawan", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
-  { from: "Leela Bhawan", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
-  { from: "New Bus Stand", to: "Leela Bhawan", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  { from: "Leela Bhawan", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak", bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  { from: "Old Bus Stand", to: "Leela Bhawan", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak", bypass: "Via 22 No. Phatak Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  
+  { from: "Leela Bhawan", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak", bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  { from: "Qila Mubarak", to: "Leela Bhawan", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak", bypass: "Via Leela Bhawan Flyover", dist: 3.5, bypassDist: 4.8, time: 9, bypassTime: 14 },
+  
+  { from: "Leela Bhawan", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
+  { from: "New Bus Stand", to: "Leela Bhawan", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 5.0, bypassDist: 6.5, time: 12, bypassTime: 18 },
 
   // Dukhniwaran to South
-  { from: "Dukhniwaran Sahib", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 2.5, bypassDist: 3.8, time: 7, bypassTime: 12 },
-  { from: "Old Bus Stand", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-024"], bypass: "Via 22 No. Phatak Flyover", dist: 2.5, bypassDist: 3.8, time: 7, bypassTime: 12 },
-  { from: "Dukhniwaran Sahib", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Qila Mubarak", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-023"], bypass: "Via Leela Bhawan Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
-  { from: "Dukhniwaran Sahib", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 4.5, bypassDist: 6.0, time: 11, bypassTime: 17 },
-  { from: "New Bus Stand", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-SANGRUR"], bypass: "Via Ring Road Bypass", dist: 4.5, bypassDist: 6.0, time: 11, bypassTime: 17 }
+  { from: "Dukhniwaran Sahib", to: "Old Bus Stand", crossingIds: ["PB-PTA-024"], via: "Via 22 No. Phatak & Mall Road", bypass: "Via 22 No. Phatak Flyover", dist: 2.5, bypassDist: 3.8, time: 7, bypassTime: 12 },
+  { from: "Old Bus Stand", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-024"], via: "Via Mall Road & 22 No. Phatak", bypass: "Via 22 No. Phatak Flyover", dist: 2.5, bypassDist: 3.8, time: 7, bypassTime: 12 },
+  
+  { from: "Dukhniwaran Sahib", to: "Qila Mubarak", crossingIds: ["PB-PTA-023"], via: "Via 23 No. Phatak & Mall Road", bypass: "Via Leela Bhawan Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  { from: "Qila Mubarak", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-023"], via: "Via Mall Road & 23 No. Phatak", bypass: "Via Leela Bhawan Flyover", dist: 3.0, bypassDist: 4.2, time: 8, bypassTime: 13 },
+  
+  { from: "Dukhniwaran Sahib", to: "New Bus Stand", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 4.5, bypassDist: 6.0, time: 11, bypassTime: 17 },
+  { from: "New Bus Stand", to: "Dukhniwaran Sahib", crossingIds: ["PB-PTA-SANGRUR"], via: "Via Sangrur Road", bypass: "Via Ring Road Bypass", dist: 4.5, bypassDist: 6.0, time: 11, bypassTime: 17 }
 ];
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -814,7 +832,7 @@ function populateSelects() {
   } else {
     const opts = CITIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     fromSelect.innerHTML = opts; toSelect.innerHTML = opts;
-    fromSelect.value = 'Patiala'; toSelect.value = 'Chandigarh'; // Default to what they tested
+    fromSelect.value = 'Patiala'; toSelect.value = 'Chandigarh';
     $('#timeField').style.display = 'block';
   }
 }
@@ -869,7 +887,7 @@ function renderRoutes(routes, fromName, toName, departTime, isLocal){
     
     return `<article class="route-card ${isBest ? 'best' : ''}">
       <div class="rc-head">
-        <div><div class="rc-title">${r.name}<span class="rc-tag">${r.tag}</span></div></div>
+        <div><div class="rc-title">${r.name}<span class="rc-tag">${r.tag}</span></div><div style="font-size:0.8rem;color:var(--muted);margin-top:4px;font-weight:600;">${r.via || ''}</div></div>
         <div class="rc-metrics">
           <div class="rc-metric"><b>${Math.round(r.distanceKm)}</b><span>km</span></div>
           <div class="rc-metric"><b>${timeString}</b><span>total time</span></div>
@@ -882,27 +900,27 @@ function renderRoutes(routes, fromName, toName, departTime, isLocal){
   }).join('');
 }
 
-// INTERCITY LOGIC (With Real-World Data & No Fake Cities)
+// INTERCITY LOGIC (With Real-World Data & Highways)
 function planIntercityRoutes(fromName, toName){
   const INTERCITY_DATA = {
-    // Patiala routes (Real distances & times)
-    "Patiala-Chandigarh": { dist: 67, time: 80, crossing: null },
-    "Patiala-Rajpura": { dist: 27, time: 23, crossing: "PB-PTA-RAJPURA" },
-    "Patiala-Sirhind": { dist: 37, time: 43, crossing: "PB-SIR-001" },
-    "Patiala-Doraha": { dist: 80, time: 95, crossing: "PB-DOR-001" },
-    "Patiala-Ludhiana": { dist: 94, time: 84, crossing: "PB-LDH-001" }, 
-    "Patiala-Jalandhar": { dist: 183, time: 136, crossing: "PB-JAL-001" },
-    "Patiala-Amritsar": { dist: 260, time: 231, crossing: "PB-ASR-001" },
-    "Patiala-Bathinda": { dist: 156, time: 138, crossing: "PB-BTI-001" },
+    // Patiala routes
+    "Patiala-Chandigarh": { dist: 67, time: 80, crossing: null, via: "Via NH7 & Zirakpur-Rajpura Road" },
+    "Patiala-Rajpura": { dist: 27, time: 23, crossing: "PB-PTA-RAJPURA", via: "Via NH7 (Rajpura-Patiala Road)" },
+    "Patiala-Sirhind": { dist: 37, time: 43, crossing: "PB-SIR-001", via: "Via NH44 (Sirhind Road)" },
+    "Patiala-Doraha": { dist: 80, time: 95, crossing: "PB-DOR-001", via: "Via NH44 (GT Road)" },
+    "Patiala-Ludhiana": { dist: 94, time: 84, crossing: "PB-LDH-001", via: "Via NH44 (GT Road) & Doraha" }, 
+    "Patiala-Jalandhar": { dist: 183, time: 136, crossing: "PB-JAL-001", via: "Via NH44 (GT Road)" },
+    "Patiala-Amritsar": { dist: 260, time: 231, crossing: "PB-ASR-001", via: "Via NH44 & Jalandhar-Amritsar Hwy" },
+    "Patiala-Bathinda": { dist: 156, time: 138, crossing: "PB-BTI-001", via: "Via NH7 / NH64 (Sangrur-Barnala)" },
     
     // Routes between other hubs
-    "Chandigarh-Ludhiana": { dist: 110, time: 120, crossing: null },
-    "Chandigarh-Amritsar": { dist: 230, time: 240, crossing: null },
-    "Rajpura-Sirhind": { dist: 20, time: 25, crossing: "PB-SIR-001" },
-    "Rajpura-Ludhiana": { dist: 65, time: 70, crossing: "PB-LDH-001" },
-    "Sirhind-Ludhiana": { dist: 55, time: 60, crossing: "PB-DOR-001" },
-    "Ludhiana-Jalandhar": { dist: 60, time: 65, crossing: "PB-LDH-001" },
-    "Jalandhar-Amritsar": { dist: 80, time: 90, crossing: "PB-JAL-001" }
+    "Chandigarh-Ludhiana": { dist: 110, time: 120, crossing: null, via: "Via NH44 (GT Road)" },
+    "Chandigarh-Amritsar": { dist: 230, time: 240, crossing: null, via: "Via NH44 & NH3" },
+    "Rajpura-Sirhind": { dist: 20, time: 25, crossing: "PB-SIR-001", via: "Via NH44" },
+    "Rajpura-Ludhiana": { dist: 65, time: 70, crossing: "PB-LDH-001", via: "Via NH44 (GT Road)" },
+    "Sirhind-Ludhiana": { dist: 55, time: 60, crossing: "PB-DOR-001", via: "Via NH44" },
+    "Ludhiana-Jalandhar": { dist: 60, time: 65, crossing: "PB-LDH-001", via: "Via NH44 (GT Road)" },
+    "Jalandhar-Amritsar": { dist: 80, time: 90, crossing: "PB-JAL-001", via: "Via NH3 (Jalandhar-Amritsar Hwy)" }
   };
 
   let key = `${fromName}-${toName}`;
@@ -915,11 +933,11 @@ function planIntercityRoutes(fromName, toName){
     const c2 = CITIES.find(c => c.name === toName);
     let dist = 120, time = 150;
     if (c1 && c2) {
-      dist = Math.round(haversine(c1, c2) * 1.3); // 1.3 road factor
-      time = Math.round((dist / 50) * 60); // Average 50km/h
+      dist = Math.round(haversine(c1, c2) * 1.3); 
+      time = Math.round((dist / 50) * 60); 
     }
     return [{
-      id: 'fallback', name: 'Highway Route', tag: 'Direct',
+      id: 'fallback', name: 'Highway Route', tag: 'Direct', via: 'Via major Punjab highways',
       distanceKm: dist, baseTime: time, delay: 0,
       totalMinutes: time, crossings: [], riskCount: 0
     }];
@@ -936,7 +954,10 @@ function planIntercityRoutes(fromName, toName){
     const baseTime = routeInfo.time * t.timeMul;
     let delay = 0;
     const det = cs.map(c => { const d = crossingDelay(c); delay += d; return { crossing:c, delay:d }; });
-    return { id:t.name, name:t.name, tag:t.tag, distanceKm:dist, baseTime, delay, totalMinutes: baseTime + delay, crossings:det, riskCount: cs.filter(c => c.status !== 'OPEN').length };
+    return { 
+      id:t.name, name:t.name, tag:t.tag, via: routeInfo.via, 
+      distanceKm:dist, baseTime, delay, totalMinutes: baseTime + delay, crossings:det, riskCount: cs.filter(c => c.status !== 'OPEN').length 
+    };
   });
 }
 
@@ -945,7 +966,7 @@ function planLocalRoutes(fromName, toName){
   let routeData = LOCAL_ROUTES.find(r => r.from === fromName && r.to === toName);
   
   if (!routeData) {
-    routeData = { from: fromName, to: toName, crossingIds: [], bypass: "Via City Bypass Road", dist: 3.5, bypassDist: 5.0, time: 9, bypassTime: 15 };
+    routeData = { from: fromName, to: toName, crossingIds: [], via: "Via City Roads", bypass: "Via City Bypass Road", dist: 3.5, bypassDist: 5.0, time: 9, bypassTime: 15 };
   }
 
   const validCrossings = routeData.crossingIds
@@ -964,12 +985,12 @@ function planLocalRoutes(fromName, toName){
 
   return [
     {
-      id: 'direct', name: 'Direct Route', tag: 'Shortest path',
+      id: 'direct', name: 'Direct Route', tag: 'Shortest path', via: routeData.via,
       distanceKm: routeData.dist, baseTime: routeData.time, delay: cDelay,
       totalMinutes: directTime, crossings: det, riskCount: validCrossings.filter(c => c.status !== 'OPEN').length
     },
     {
-      id: 'bypass', name: routeData.bypass, tag: 'Bypass route',
+      id: 'bypass', name: routeData.bypass, tag: 'Bypass route', via: 'Avoids main city center',
       distanceKm: routeData.bypassDist, baseTime: routeData.bypassTime, delay: 0,
       totalMinutes: bypassTime, crossings: [], riskCount: 0
     }

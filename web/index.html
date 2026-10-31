@@ -524,7 +524,18 @@ footer{background:linear-gradient(170deg,#263E36,#1A2D25);color:#A7BC9A;padding-
 const API_BASE = (location.protocol === 'file:') ? 'http://localhost:8080' : '';
 
 let CROSSINGS = [];
-let CITIES = [];
+// HARD LOCK THE CITIES (Do not let API override this)
+const CITIES = [
+  { name:'Patiala', lat:30.3398, lng:76.3869 }, 
+  { name:'Rajpura', lat:30.4833, lng:76.5945 },
+  { name:'Sirhind', lat:30.6432, lng:76.3821 }, 
+  { name:'Ludhiana', lat:30.9010, lng:75.8573 }, 
+  { name:'Jalandhar', lat:31.3260, lng:75.5762 },
+  { name:'Amritsar', lat:31.6340, lng:74.8723 }, 
+  { name:'Bathinda', lat:30.2110, lng:74.9455 },
+  { name:'Doraha', lat:30.7998, lng:76.0201 },
+  { name:'Chandigarh', lat:30.7333, lng:76.7794 }
+];
 
 /* PATIALA LOCAL ROUTING DATA - ACCURATE GEOGRAPHY */
 const PATIALA_LOCATIONS = [
@@ -654,18 +665,6 @@ const FALLBACK_CROSSINGS = [
   { id:'PB-ASR-001', name:'Amritsar-Pathankot LC C-9', city:'Amritsar', state:'Punjab', zone:'Northern Railway', division:'Firozpur', line:'Amritsar-Pathankot Line', landmark:'Amritsar city', avgWaitMinutes:10, dailyTrains:36, alternateRoute:'GT Road Bypass / NH-354', status:'OPEN', secondsToNext:69 },
   { id:'PB-BTI-001', name:'Bathinda-Delhi LC B/87', city:'Bathinda', state:'Punjab', zone:'Northern Railway', division:'Ambala', line:'Bathinda-Delhi Main Line', landmark:'Bathinda city', avgWaitMinutes:10, dailyTrains:50, alternateRoute:'Barnala Bypass', status:'CLOSING', secondsToNext:28 },
   { id:'PB-DOR-001', name:'Doraha LC 164A', city:'Doraha', state:'Punjab', zone:'Northern Railway', division:'Firozpur', line:'Ambala-Ludhiana Section', landmark:'Doraha', avgWaitMinutes:13, dailyTrains:56, alternateRoute:'Doraha ROB / NH-44', status:'CLOSED', secondsToNext:142 }
-];
-
-// STRICTLY LIMITED TO CITIES WITH DATA
-const FALLBACK_CITIES = [
-  { name:'Patiala', lat:30.3398, lng:76.3869 }, 
-  { name:'Rajpura', lat:30.4833, lng:76.5945 },
-  { name:'Sirhind', lat:30.6432, lng:76.3821 }, 
-  { name:'Ludhiana', lat:30.9010, lng:75.8573 }, 
-  { name:'Jalandhar', lat:31.3260, lng:75.5762 },
-  { name:'Amritsar', lat:31.6340, lng:74.8723 }, 
-  { name:'Bathinda', lat:30.2110, lng:74.9455 },
-  { name:'Doraha', lat:30.7998, lng:76.0201 }
 ];
 
 const TRANSITIONS = { OPEN:{next:'CLOSING',min:35,max:95}, CLOSING:{next:'CLOSED',min:16,max:34}, CLOSED:{next:'OPEN',min:70,max:170} };
@@ -815,7 +814,7 @@ function populateSelects() {
   } else {
     const opts = CITIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     fromSelect.innerHTML = opts; toSelect.innerHTML = opts;
-    fromSelect.value = 'Patiala'; toSelect.value = 'Rajpura';
+    fromSelect.value = 'Patiala'; toSelect.value = 'Chandigarh'; // Default to what they tested
     $('#timeField').style.display = 'block';
   }
 }
@@ -887,6 +886,7 @@ function renderRoutes(routes, fromName, toName, departTime, isLocal){
 function planIntercityRoutes(fromName, toName){
   const INTERCITY_DATA = {
     // Patiala routes (Real distances & times)
+    "Patiala-Chandigarh": { dist: 67, time: 80, crossing: null },
     "Patiala-Rajpura": { dist: 27, time: 23, crossing: "PB-PTA-RAJPURA" },
     "Patiala-Sirhind": { dist: 37, time: 43, crossing: "PB-SIR-001" },
     "Patiala-Doraha": { dist: 80, time: 95, crossing: "PB-DOR-001" },
@@ -896,6 +896,8 @@ function planIntercityRoutes(fromName, toName){
     "Patiala-Bathinda": { dist: 156, time: 138, crossing: "PB-BTI-001" },
     
     // Routes between other hubs
+    "Chandigarh-Ludhiana": { dist: 110, time: 120, crossing: null },
+    "Chandigarh-Amritsar": { dist: 230, time: 240, crossing: null },
     "Rajpura-Sirhind": { dist: 20, time: 25, crossing: "PB-SIR-001" },
     "Rajpura-Ludhiana": { dist: 65, time: 70, crossing: "PB-LDH-001" },
     "Sirhind-Ludhiana": { dist: 55, time: 60, crossing: "PB-DOR-001" },
@@ -908,11 +910,18 @@ function planIntercityRoutes(fromName, toName){
   
   const routeInfo = INTERCITY_DATA[key];
   if (!routeInfo) {
-    // If the pair isn't explicitly defined (e.g., Amritsar to Bathinda), return a generic safe route
+    // If the pair isn't explicitly defined, calculate haversine distance as a safe fallback
+    const c1 = CITIES.find(c => c.name === fromName);
+    const c2 = CITIES.find(c => c.name === toName);
+    let dist = 120, time = 150;
+    if (c1 && c2) {
+      dist = Math.round(haversine(c1, c2) * 1.3); // 1.3 road factor
+      time = Math.round((dist / 50) * 60); // Average 50km/h
+    }
     return [{
       id: 'fallback', name: 'Highway Route', tag: 'Direct',
-      distanceKm: 150, baseTime: 180, delay: 0,
-      totalMinutes: 180, crossings: [], riskCount: 0
+      distanceKm: dist, baseTime: time, delay: 0,
+      totalMinutes: time, crossings: [], riskCount: 0
     }];
   }
 
@@ -1086,16 +1095,16 @@ async function loadInitialData(){
   await loadKaggleData();
 
   try {
-    const [cr, ci] = await Promise.all([fetch(API_BASE + '/api/crossings'), fetch(API_BASE + '/api/cities')]);
-    if (!cr.ok || !ci.ok) throw new Error();
-    const cj = await cr.json(); const ij = await ci.json();
+    const cr = await fetch(API_BASE + '/api/crossings');
+    if (!cr.ok) throw new Error();
+    const cj = await cr.json(); 
     
     // Map Kaggle weather/closing times to crossings
     CROSSINGS = cj.crossings.map(c => {
         const k = getKaggleRow();
         return { ...c, secondsToNext: c.secondsToNext || c.expectedWait || 60, maxTimer: c.secondsToNext || 60, avgWaitMinutes: c.avgWaitMinutes, weather: k.weather, actualClosingTime: k.actualClosingTime };
     });
-    CITIES = ij.cities;
+    // DO NOT FETCH /api/cities. We use our hardcoded CITIES array.
   } catch (err) {
     console.warn('API not reachable, using fallback data', err);
     
@@ -1104,7 +1113,6 @@ async function loadInitialData(){
         const k = getKaggleRow();
         return { ...c, maxTimer: c.secondsToNext, weather: k.weather, actualClosingTime: k.actualClosingTime };
     });
-    CITIES = FALLBACK_CITIES;
   }
   renderHeroStats();
   renderBoard();

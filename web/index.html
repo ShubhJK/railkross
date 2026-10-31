@@ -656,15 +656,16 @@ const FALLBACK_CROSSINGS = [
   { id:'PB-DOR-001', name:'Doraha LC 164A', city:'Doraha', state:'Punjab', zone:'Northern Railway', division:'Firozpur', line:'Ambala-Ludhiana Section', landmark:'Doraha', avgWaitMinutes:13, dailyTrains:56, alternateRoute:'Doraha ROB / NH-44', status:'CLOSED', secondsToNext:142 }
 ];
 
+// STRICTLY LIMITED TO CITIES WITH DATA
 const FALLBACK_CITIES = [
-  { name:'Patiala', lat:30.3398, lng:76.3869 }, { name:'Rajpura', lat:30.4833, lng:76.5945 },
-  { name:'Sirhind', lat:30.6432, lng:76.3821 }, { name:'Sangrur', lat:30.2458, lng:75.8421 },
-  { name:'Ludhiana', lat:30.9010, lng:75.8573 }, { name:'Jalandhar', lat:31.3260, lng:75.5762 },
-  { name:'Amritsar', lat:31.6340, lng:74.8723 }, { name:'Bathinda', lat:30.2110, lng:74.9455 },
-  { name:'Doraha', lat:30.7998, lng:76.0201 }, { name:'Chandigarh', lat:30.7333, lng:76.7794 },
-  { name:'Mohali', lat:30.7046, lng:76.7179 }, { name:'Moga', lat:30.8158, lng:75.1717 },
-  { name:'Firozpur', lat:30.9331, lng:74.6225 }, { name:'Pathankot', lat:32.2643, lng:75.6421 },
-  { name:'Hoshiarpur', lat:31.5143, lng:75.9115 }, { name:'Ambala', lat:30.3782, lng:76.7767 }
+  { name:'Patiala', lat:30.3398, lng:76.3869 }, 
+  { name:'Rajpura', lat:30.4833, lng:76.5945 },
+  { name:'Sirhind', lat:30.6432, lng:76.3821 }, 
+  { name:'Ludhiana', lat:30.9010, lng:75.8573 }, 
+  { name:'Jalandhar', lat:31.3260, lng:75.5762 },
+  { name:'Amritsar', lat:31.6340, lng:74.8723 }, 
+  { name:'Bathinda', lat:30.2110, lng:74.9455 },
+  { name:'Doraha', lat:30.7998, lng:76.0201 }
 ];
 
 const TRANSITIONS = { OPEN:{next:'CLOSING',min:35,max:95}, CLOSING:{next:'CLOSED',min:16,max:34}, CLOSED:{next:'OPEN',min:70,max:170} };
@@ -814,7 +815,7 @@ function populateSelects() {
   } else {
     const opts = CITIES.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     fromSelect.innerHTML = opts; toSelect.innerHTML = opts;
-    fromSelect.value = 'Patiala'; toSelect.value = 'Chandigarh';
+    fromSelect.value = 'Patiala'; toSelect.value = 'Rajpura';
     $('#timeField').style.display = 'block';
   }
 }
@@ -826,7 +827,6 @@ function crossingDelay(c){
   if (c.status === 'CLOSING') return c.avgWaitMinutes * 0.8 + 1.5;
   return (c.secondsToNext || 60) / 60 + c.avgWaitMinutes * 0.45;
 }
-function crossingForCity(city){ return CROSSINGS.find(c => c.city === city) || null; }
 
 function renderRoutes(routes, fromName, toName, departTime, isLocal){
   const c = $('#resultsContainer');
@@ -883,39 +883,36 @@ function renderRoutes(routes, fromName, toName, departTime, isLocal){
   }).join('');
 }
 
-// INTERCITY LOGIC (With Accurate Real-World Distances)
+// INTERCITY LOGIC (With Strict Geographic Routing)
 function planIntercityRoutes(fromName, toName){
   const INTERCITY_DATA = {
-    "Patiala-Chandigarh": { dist: 70, time: 90 },
-    "Patiala-Ludhiana": { dist: 120, time: 120 },
-    "Patiala-Amritsar": { dist: 235, time: 240 },
-    "Patiala-Jalandhar": { dist: 155, time: 150 },
-    "Patiala-Bathinda": { dist: 150, time: 150 },
-    "Patiala-Ambala": { dist: 65, time: 75 },
-    "Patiala-Delhi": { dist: 250, time: 260 },
-    "Chandigarh-Ludhiana": { dist: 110, time: 120 },
-    "Chandigarh-Amritsar": { dist: 230, time: 240 },
-    "Ludhiana-Amritsar": { dist: 140, time: 140 }
+    // Patiala routes
+    "Patiala-Rajpura": { dist: 30, time: 35, crossing: "PB-PTA-RAJPURA" },
+    "Patiala-Sirhind": { dist: 45, time: 55, crossing: "PB-SIR-001" },
+    "Patiala-Doraha": { dist: 80, time: 90, crossing: "PB-DOR-001" },
+    "Patiala-Ludhiana": { dist: 100, time: 110, crossing: "PB-LDH-001" },
+    "Patiala-Jalandhar": { dist: 155, time: 170, crossing: "PB-JAL-001" },
+    "Patiala-Amritsar": { dist: 230, time: 260, crossing: "PB-ASR-001" },
+    "Patiala-Bathinda": { dist: 150, time: 160, crossing: "PB-BTI-001" },
+    // Direct routes between other hubs
+    "Rajpura-Ludhiana": { dist: 70, time: 80, crossing: "PB-LDH-001" },
+    "Ludhiana-Jalandhar": { dist: 60, time: 65, crossing: "PB-LDH-001" },
+    "Jalandhar-Amritsar": { dist: 80, time: 90, crossing: "PB-JAL-001" }
   };
 
-  const pairKey = `${fromName}-${toName}`;
-  const reverseKey = `${toName}-${fromName}`;
-  const routeInfo = INTERCITY_DATA[pairKey] || INTERCITY_DATA[reverseKey] || { dist: 120, time: 120 };
-
-  const originX = crossingForCity(fromName), destX = crossingForCity(toName);
-  const middles = CITIES.filter(c => c.name !== fromName && c.name !== toName);
-  const midCity = middles[0];
-  const midX = crossingForCity(midCity.name);
+  let key = `${fromName}-${toName}`;
+  if (!INTERCITY_DATA[key]) key = `${toName}-${fromName}`;
+  
+  // Fallback if route is not explicitly defined (e.g., Rajpura to Amritsar)
+  const routeInfo = INTERCITY_DATA[key] || { dist: 120, time: 140, crossing: null };
 
   const templates = [
-    { name:'Main Highway Corridor', tag:'Most direct', crossings:[originX].filter(Boolean), distMul:1.00, timeMul:1.00 },
-    { name:'Ring Road Bypass', tag:'Zero crossings', crossings:[], distMul:1.15, timeMul:1.15 },
-    { name:'City Shortcut', tag:'Shortest distance', crossings:[originX, midX, destX].filter(Boolean), distMul:0.95, timeMul:1.05 }
+    { name:'Main Highway Corridor', tag:'Most direct', useCrossing: true, distMul:1.00, timeMul:1.00 },
+    { name:'Ring Road Bypass', tag:'Zero crossings', useCrossing: false, distMul:1.15, timeMul:1.15 }
   ];
 
   return templates.map(t => {
-    const seen = new Set();
-    const cs = t.crossings.filter(c => { if (!c || seen.has(c.id)) return false; seen.add(c.id); return true; });
+    const cs = (t.useCrossing && routeInfo.crossing) ? [CROSSINGS.find(c => c.id === routeInfo.crossing)].filter(Boolean) : [];
     const dist = routeInfo.dist * t.distMul;
     const baseTime = routeInfo.time * t.timeMul;
     let delay = 0;
@@ -928,7 +925,6 @@ function planIntercityRoutes(fromName, toName){
 function planLocalRoutes(fromName, toName){
   let routeData = LOCAL_ROUTES.find(r => r.from === fromName && r.to === toName);
   
-  // Fallback if route is not predefined (e.g., if someone swaps to an unlisted pair)
   if (!routeData) {
     routeData = { from: fromName, to: toName, crossingIds: [], bypass: "Via City Bypass Road", dist: 3.5, bypassDist: 5.0, time: 9, bypassTime: 15 };
   }
